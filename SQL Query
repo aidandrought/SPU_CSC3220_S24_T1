@@ -1,0 +1,54 @@
+--
+-- File generated with SQLiteStudio v3.4.4 on Wed May 8 14:32:03 2024
+--
+-- Text encoding used: System
+--
+PRAGMA foreign_keys = off;
+BEGIN TRANSACTION;
+
+-- Table: Category
+CREATE TABLE Category (
+    CategoryID   INTEGER PRIMARY KEY AUTOINCREMENT,
+    CategoryName ANY     NOT NULL,
+    CategoryType ANY
+)
+STRICT;
+
+
+-- Table: InCategory
+CREATE TABLE InCategory (
+    CategoryID INTEGER NOT NULL
+                       REFERENCES Category (CategoryID),
+    TaskID     INTEGER NOT NULL
+                       REFERENCES Task (TaskID),
+    PRIMARY KEY (
+        CategoryID,
+        TaskID
+    )
+)
+STRICT;
+
+
+-- Table: Task
+CREATE TABLE Task (
+    TaskID          INTEGER PRIMARY KEY AUTOINCREMENT,
+    TaskName        ANY,
+    TaskDeadline    ANY,
+    Status          INTEGER NOT NULL
+                            AS (0),
+    PriorityLevel   INTEGER,
+    TaskDescription TEXT
+)
+STRICT;
+
+
+-- Table: TaskInTask
+CREATE TABLE TaskInTask (
+    TaskID INTEGER REFERENCES Task (TaskID) 
+                 NOT NULL
+)
+STRICT;
+
+
+COMMIT TRANSACTION;
+PRAGMA foreign_keys = on;
